@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -41,6 +42,7 @@ public class NoteController {
                 }
                 BeanUtils.copyProperties(noteDTO, note);
                 note.setCreatedAt(LocalDateTime.now(ZoneId.of("UTC")));
+                noteService.save(note);
                 return new ResponseEntity<>("Saved Note", HttpStatus.OK);
             } else {
                 noteService.updateNoteIfExists(noteDTO);
@@ -55,6 +57,21 @@ public class NoteController {
     @GetMapping
     public List<Note> getAll() {
         return noteService.getAll();
+    }
+
+    @GetMapping(value="getLatestFive")
+    public List<NoteDTO> getLatestFive() {
+        List<Note> noteList = noteService.getLastestFive();
+        List<NoteDTO> response = new ArrayList<>();
+        for(Note n : noteList) {
+            NoteDTO noteDTO = new NoteDTO();
+            noteDTO.setId(n.getId().toString());
+            noteDTO.setTitle(n.getTitle());
+            noteDTO.setTagUUIDS(n.getTagUUIDS());
+            noteDTO.setCreatedBy(userService.getUserById(UUID.fromString(n.getCreatedBy())).getUsername());
+            response.add(noteDTO);
+        }
+        return response;
     }
 
 

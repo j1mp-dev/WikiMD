@@ -2,6 +2,7 @@ package my.md.wikimd.models;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -11,6 +12,9 @@ public class Note {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
+
+    @Column
+    private String tagUUIDS;
 
     @Column(nullable = false, length = 100)
     private String title;
@@ -31,8 +35,9 @@ public class Note {
     public Note() {
     }
 
-    public Note(UUID id, String title, String content, int version, String createdBy, LocalDateTime createdAt) {
+    public Note(UUID id, String tagUUIDS, String title, String content, int version, String createdBy, LocalDateTime createdAt) {
         this.id = id;
+        this.tagUUIDS = tagUUIDS;
         this.title = title;
         this.content = content;
         this.version = version;
@@ -42,6 +47,10 @@ public class Note {
 
     public UUID getId() {
         return id;
+    }
+
+    public String getTagUUIDS() {
+        return tagUUIDS;
     }
 
     public String getTitle() {
@@ -68,6 +77,10 @@ public class Note {
         this.id = id;
     }
 
+    public void setTagUUIDS(String tagUUIDS) {
+        this.tagUUIDS = tagUUIDS;
+    }
+
     public void setTitle(String title) {
         this.title = title;
     }
@@ -87,5 +100,4 @@ public class Note {
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
-
 }

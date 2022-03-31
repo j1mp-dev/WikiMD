@@ -8,6 +8,8 @@ public class NoteDTO {
 
     private String id;
 
+    private String tagUUIDS;
+
     @NotBlank
     @Size(max = 100)
     private String title;
@@ -22,8 +24,9 @@ public class NoteDTO {
     public NoteDTO() {
     }
 
-    public NoteDTO(String id, String title, String content, String createdBy) {
+    public NoteDTO(String id, String tagUUIDS, String title, String content, String createdBy) {
         this.id = id;
+        this.tagUUIDS = tagUUIDS;
         this.title = title;
         this.content = content;
         this.createdBy = createdBy;
@@ -31,6 +34,10 @@ public class NoteDTO {
 
     public String getId() {
         return id;
+    }
+
+    public String getTagUUIDS() {
+        return tagUUIDS;
     }
 
     public String getTitle() {
@@ -47,6 +54,10 @@ public class NoteDTO {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public void setTagUUIDS(String tagUUIDS) {
+        this.tagUUIDS = tagUUIDS;
     }
 
     public void setTitle(String title) {
