@@ -5,6 +5,7 @@ import my.md.wikimd.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.Tuple;
 import javax.transaction.Transactional;
 import java.util.UUID;
 
@@ -21,7 +22,17 @@ public class UserService {
 
     @Transactional
     public User getUserById(UUID id) {
-        return userRepository.getById(id);
+        return userRepository.findById(id).get();
     }
+
+    @Transactional
+    public User getUserLogin(String username, String password) {
+        return userRepository.getUserLogin(username, password);
+    }
+
+    public Tuple getUserData() {
+        return userRepository.getUserData();
+    }
+
 
 }

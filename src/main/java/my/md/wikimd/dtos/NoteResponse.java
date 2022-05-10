@@ -4,27 +4,29 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
-public class NoteDTO {
+public class NoteResponse {
 
     private String id;
 
     private String tags;
 
+    @NotBlank
     @Size(max = 100)
     private String title;
 
+    @NotBlank
     @Size(max = 100000)
     private String content;
 
     @NotBlank
-    private String createdBy;
+    private UserDTO createdBy;
 
     private String createdAt;
 
-    public NoteDTO() {
+    public NoteResponse() {
     }
 
-    public NoteDTO(String id, String tags, String title, String content, String createdBy, String createdAt) {
+    public NoteResponse(String id, String tags, String title, String content, UserDTO createdBy, String createdAt) {
         this.id = id;
         this.tags = tags;
         this.title = title;
@@ -49,7 +51,7 @@ public class NoteDTO {
         return content;
     }
 
-    public String getCreatedBy() {
+    public UserDTO getCreatedBy() {
         return createdBy;
     }
 
@@ -73,23 +75,11 @@ public class NoteDTO {
         this.content = content;
     }
 
-    public void setCreatedBy(String createdBy) {
+    public void setCreatedBy(UserDTO createdBy) {
         this.createdBy = createdBy;
     }
 
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
-    }
-
-    @Override
-    public String toString() {
-        return "NoteDTO{" +
-                "id='" + id + '\'' +
-                ", tags='" + tags + '\'' +
-                ", title='" + title + '\'' +
-                ", content='" + content + '\'' +
-                ", createdBy='" + createdBy + '\'' +
-                ", createdAt='" + createdAt + '\'' +
-                '}';
     }
 }

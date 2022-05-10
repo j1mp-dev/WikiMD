@@ -34,15 +34,16 @@ public class NoteService {
     }
 
     @Transactional
-    public boolean updateNoteIfExists(NoteDTO noteDTO) {
+    public Note updateNoteIfExists(NoteDTO noteDTO) {
         Note note = getNoteById(UUID.fromString(noteDTO.getId()));
         if(note == null) {
-            return false;
+            return null;
         }
         note.setTitle(noteDTO.getTitle());
+        note.setTags(noteDTO.getTags());
         note.setContent(noteDTO.getContent());
         noteRepository.save(note);
-        return true;
+        return note;
     }
 
     @Transactional
@@ -50,5 +51,20 @@ public class NoteService {
         return noteRepository.getLatestFive();
     }
 
+    @Transactional
+    public List<Note> getNotesCreatedBy(UUID id) {
+        return noteRepository.getNotesCreatedBy(id);
+    }
+
+    @Transactional
+    public List<Note> getNotesByPage(int page, int itemsPerPage) {
+        page = page*itemsPerPage;
+        return noteRepository.getNotesByPage(page, itemsPerPage);
+    }
+
+    @Transactional
+    public void deleteNote(UUID id) {
+        noteRepository.deleteById(id);
+    }
 
 }

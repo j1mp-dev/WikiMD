@@ -14,7 +14,7 @@ public class Note {
     private UUID id;
 
     @Column
-    private String tagUUIDS;
+    private String tags;
 
     @Column(nullable = false, length = 100)
     private String title;
@@ -27,7 +27,7 @@ public class Note {
     private int version;
 
     @Column(nullable = false)
-    private String createdBy;
+    private UUID createdBy;
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
@@ -35,9 +35,9 @@ public class Note {
     public Note() {
     }
 
-    public Note(UUID id, String tagUUIDS, String title, String content, int version, String createdBy, LocalDateTime createdAt) {
+    public Note(UUID id, String tags, String title, String content, int version, UUID createdBy, LocalDateTime createdAt) {
         this.id = id;
-        this.tagUUIDS = tagUUIDS;
+        this.tags = tags;
         this.title = title;
         this.content = content;
         this.version = version;
@@ -49,8 +49,8 @@ public class Note {
         return id;
     }
 
-    public String getTagUUIDS() {
-        return tagUUIDS;
+    public String getTags() {
+        return tags;
     }
 
     public String getTitle() {
@@ -65,7 +65,7 @@ public class Note {
         return version;
     }
 
-    public String getCreatedBy() {
+    public UUID getCreatedBy() {
         return createdBy;
     }
 
@@ -77,8 +77,8 @@ public class Note {
         this.id = id;
     }
 
-    public void setTagUUIDS(String tagUUIDS) {
-        this.tagUUIDS = tagUUIDS;
+    public void setTags(String tags) {
+        this.tags = tags;
     }
 
     public void setTitle(String title) {
@@ -93,7 +93,7 @@ public class Note {
         this.version = version;
     }
 
-    public void setCreatedBy(String createdBy) {
+    public void setCreatedBy(UUID createdBy) {
         this.createdBy = createdBy;
     }
 
