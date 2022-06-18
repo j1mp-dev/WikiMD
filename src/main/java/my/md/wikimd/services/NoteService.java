@@ -1,6 +1,7 @@
 package my.md.wikimd.services;
 
 import my.md.wikimd.dtos.NoteDTO;
+import my.md.wikimd.dtos.SaveNoteRequest;
 import my.md.wikimd.models.Note;
 import my.md.wikimd.repositories.NoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,14 +35,14 @@ public class NoteService {
     }
 
     @Transactional
-    public Note updateNoteIfExists(NoteDTO noteDTO) {
-        Note note = getNoteById(UUID.fromString(noteDTO.getId()));
+    public Note updateNoteIfExists(SaveNoteRequest saveNoteRequest) {
+        Note note = getNoteById(UUID.fromString(saveNoteRequest.getId()));
         if(note == null) {
             return null;
         }
-        note.setTitle(noteDTO.getTitle());
-        note.setTags(noteDTO.getTags());
-        note.setContent(noteDTO.getContent());
+        note.setTitle(saveNoteRequest.getTitle());
+        note.setTags(saveNoteRequest.getTags());
+        note.setContent(saveNoteRequest.getContent());
         noteRepository.save(note);
         return note;
     }
@@ -57,9 +58,9 @@ public class NoteService {
     }
 
     @Transactional
-    public List<Note> getNotesByPage(int page, int itemsPerPage) {
+    public List<Note> getNotesByPage(int page, int itemsPerPage, String filter) {
         page = page*itemsPerPage;
-        return noteRepository.getNotesByPage(page, itemsPerPage);
+        return noteRepository.getNotesByPage(page, itemsPerPage, filter);
     }
 
     @Transactional

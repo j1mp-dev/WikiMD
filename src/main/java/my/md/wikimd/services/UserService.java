@@ -30,8 +30,8 @@ public class UserService {
         return userRepository.getUserLogin(username, password);
     }
 
-    public Tuple getUserData() {
-        return userRepository.getUserData();
+    public Tuple getUserData(UUID id) {
+        return userRepository.getUserData(id);
     }
 
 

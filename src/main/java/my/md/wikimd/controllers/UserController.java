@@ -19,6 +19,7 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.UUID;
 
@@ -65,19 +66,25 @@ public class UserController {
                 user.getPermLevel());
         GetUserByIdResponse response = new GetUserByIdResponse();
         response.setUser(userDTO);
-        Tuple userStats = userService.getUserData();
-        response.setPermLevel((int) userStats.get(userStats.getElements().get(0)));
-        Date date = new Date(((Timestamp) userStats.get(userStats.getElements().get(1))).getTime());
+        Tuple userStats = userService.getUserData(UUID.fromString(id));
+        Date date = new Date();
+        if(userStats != null) {
+            response.setPermLevel((int) userStats.get(userStats.getElements().get(0)));
+            response.setCount_cards(((BigInteger) userStats.get(userStats.getElements().get(2))).intValue());
+            date = new Date(((Timestamp) userStats.get(userStats.getElements().get(1))).getTime());
+        } else {
+            response.setPermLevel(0);
+            response.setCount_cards(0);
+        }
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-YYYY");
         response.setCreated_at(dateFormat.format(date));
-        response.setCount_cards(((BigInteger) userStats.get(userStats.getElements().get(2))).intValue());
         System.out.println(user);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @GetMapping("/getUserStats")
     public ResponseEntity getUserStats() {
-        userService.getUserData();
+        userService.getUserData(UUID.fromString(""));
         return ResponseEntity.status(HttpStatus.OK).body("");
     }
 

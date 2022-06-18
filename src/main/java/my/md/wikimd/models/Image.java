@@ -4,8 +4,8 @@ import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
-@Table(name="TB_NOTE_IMAGE")
-public class NoteImage {
+@Table(name="TB_IMAGE")
+public class Image {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -14,16 +14,12 @@ public class NoteImage {
     @Column(nullable = false, columnDefinition="TEXT")
     String image;
 
-    @Column(nullable = false)
-    UUID noteId;
-
-    public NoteImage() {
+    public Image() {
     }
 
-    public NoteImage(UUID id, String image, UUID noteId) {
+    public Image(UUID id, String image) {
         this.id = id;
         this.image = image;
-        this.noteId = noteId;
     }
 
     public UUID getId() {
@@ -34,19 +30,11 @@ public class NoteImage {
         return image;
     }
 
-    public UUID getNoteId() {
-        return noteId;
-    }
-
     public void setId(UUID id) {
         this.id = id;
     }
 
     public void setImage(String image) {
         this.image = image;
-    }
-
-    public void setNoteId(UUID noteId) {
-        this.noteId = noteId;
     }
 }

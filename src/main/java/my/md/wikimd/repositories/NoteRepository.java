@@ -18,7 +18,7 @@ public interface NoteRepository extends JpaRepository<Note, UUID> {
     @Query(value="SELECT n FROM Note n WHERE n.createdBy = :createdById AND n.title <> '' AND n.content <> '' ORDER BY created_at DESC")
     List<Note> getNotesCreatedBy(@Param("createdById") UUID createdById);
 
-    @Query(value="SELECT * FROM tb_note WHERE title <> '' AND content <> '' ORDER BY id OFFSET :page ROWS FETCH NEXT :itemsPerPage ROWS ONLY", nativeQuery = true)
-    List<Note> getNotesByPage(@Param("page") int page, @Param("itemsPerPage") int itemsPerPage);
+    @Query(value="SELECT * FROM tb_note WHERE title <> '' AND content <> '' AND UPPER(title) LIKE UPPER(:filter) ORDER BY id OFFSET :page ROWS FETCH NEXT :itemsPerPage ROWS ONLY", nativeQuery = true)
+    List<Note> getNotesByPage(@Param("page") int page, @Param("itemsPerPage") int itemsPerPage, @Param("filter") String filter);
 
 }

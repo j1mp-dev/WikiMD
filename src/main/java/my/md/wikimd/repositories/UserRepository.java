@@ -19,8 +19,8 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     @Query(value="SELECT u.perm_level, u.created_at, count(*) FROM public.tb_user AS u\n" +
             "FULL OUTER JOIN tb_note AS n ON u.id = n.created_by\n" +
-            "WHERE u.id = '26368936-4eff-478a-9835-0657c8d73ebc'\n" +
+            "WHERE u.id = :id\n" +
             "GROUP BY u.id", nativeQuery = true)
-    Tuple getUserData();
+    Tuple getUserData(@Param("id") UUID id);
 
 }

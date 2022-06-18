@@ -2,23 +2,18 @@ package my.md.wikimd.dtos;
 
 import javax.validation.constraints.NotBlank;
 
-public class NoteImageDTO {
+public class SaveImageRequest {
 
     String id;
 
     @NotBlank
     String image;
 
-    @NotBlank
-    String noteId;
-
-    public NoteImageDTO() {
+    public SaveImageRequest() {
     }
-
-    public NoteImageDTO(String id, String image, String noteId) {
+    public SaveImageRequest(String id, String image) {
         this.id = id;
         this.image = image;
-        this.noteId = noteId;
     }
 
     public String getId() {
@@ -29,10 +24,6 @@ public class NoteImageDTO {
         return image;
     }
 
-    public String getNoteId() {
-        return noteId;
-    }
-
     public void setId(String id) {
         this.id = id;
     }
@@ -40,8 +31,5 @@ public class NoteImageDTO {
     public void setImage(String image) {
         this.image = image;
     }
-
-    public void setNoteId(String noteId) {
-        this.noteId = noteId;
-    }
 }
+

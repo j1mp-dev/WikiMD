@@ -44,27 +44,27 @@ public class NoteController {
     TagService tagService;
 
     @PostMapping
-    public ResponseEntity saveNote(@RequestBody @Valid NoteDTO noteDTO) {
+    public ResponseEntity saveNote(@RequestBody @Valid SaveNoteRequest saveNoteRequest) {
         Note note = new Note();
         try {
             // Check if note UUID is sent in request
-            if (noteDTO.getId() == null) {
+            if (saveNoteRequest.getId() == null) {
                 // Check if user exists by UUID if not throw exception
-                User user = userService.getUserById(UUID.fromString(noteDTO.getCreatedBy()));
+                User user = userService.getUserById(UUID.fromString(saveNoteRequest.getCreatedBy()));
                 if(user != null) {
                     System.out.println(user);
                 }
                 String tags = "";
-                if (noteDTO.getTags() != null && !noteDTO.getTags().isBlank()) {
-                    for(String tag: noteDTO.getTags().split(",")) {
+                if (saveNoteRequest.getTags() != null && !saveNoteRequest.getTags().isBlank()) {
+                    for(String tag: saveNoteRequest.getTags().split(",")) {
                         String s = tag.substring(0, 1).toUpperCase(Locale.ROOT) + tag.substring(1);
                         System.out.println(s);
                         tags += tagService.saveTagIfNotExists(s).getName() + ",";
                     }
                 }
-                noteDTO.setTags(tags);
-                BeanUtils.copyProperties(noteDTO, note);
-                note.setCreatedBy(UUID.fromString(noteDTO.getCreatedBy()));
+                saveNoteRequest.setTags(tags);
+                BeanUtils.copyProperties(saveNoteRequest, note);
+                note.setCreatedBy(UUID.fromString(saveNoteRequest.getCreatedBy()));
                 note.setCreatedAt(LocalDateTime.now(ZoneId.of("UTC")));
                 note = noteService.save(note);
                 actionLogService.save(new ActionLog(
@@ -74,7 +74,7 @@ public class NoteController {
                         LocalDateTime.now(ZoneId.of("UTC"))));
                 return ResponseEntity.status(HttpStatus.OK).body(note.getId());
             } else {
-                note = noteService.updateNoteIfExists(noteDTO);
+                note = noteService.updateNoteIfExists(saveNoteRequest);
                 actionLogService.save(new ActionLog(
                         note.getCreatedBy(),
                         note.getId(),
@@ -144,8 +144,10 @@ public class NoteController {
     @GetMapping(value="getNotesByPage")
     public List<NoteResponse> getNotesByPage(@Valid @NotNull @RequestParam int page,
                                         @Valid @NotNull @RequestParam int  itemsPerPage,
-                                        @RequestParam(required = false) String orderBy) {
-        List<Note> noteList = noteService.getNotesByPage(page, itemsPerPage);
+                                        @RequestParam(required = false) String orderBy,
+                                             @RequestParam String filter) {
+        filter = filter == "" ? "%" : "%" + filter + "%";
+        List<Note> noteList = noteService.getNotesByPage(page, itemsPerPage, filter);
         List<NoteResponse> response = new ArrayList<>();
 
         for(Note n: noteList) {
